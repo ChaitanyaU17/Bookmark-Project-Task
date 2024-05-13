@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import BookmarkForm from "./components/BookmarkForm";
+import BookmarkList from "./components/BookmarkList";
 
-function App() {
+const App = () => {
+  const [bookmarks, setBookmarks] = useState([]);
+
+  const handleAddBookmark = (newBookmark) => {
+    setBookmarks([...bookmarks, newBookmark]);
+  };
+
+  const handleDeleteBookmark = (index) => {
+    const updatedBookmarks = [...bookmarks];
+    updatedBookmarks.splice(index, 1);
+    setBookmarks(updatedBookmarks);
+  };
+
+  const handleEditBookmark = (index, newTitle, newUrl) => {
+    const updatedBookmarks = [...bookmarks];
+    updatedBookmarks[index].title = newTitle;
+    updatedBookmarks[index].url = newUrl;
+    setBookmarks(updatedBookmarks);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BookmarkForm onAddBookmark={handleAddBookmark} />
+      <BookmarkList
+        bookmarks={bookmarks}
+        onDeleteBookmark={handleDeleteBookmark}
+        onEditBookmark={handleEditBookmark}
+      />
     </div>
   );
-}
+};
 
 export default App;
